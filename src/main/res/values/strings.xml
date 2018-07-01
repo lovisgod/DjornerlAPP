@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">myGjOrNerL</string>
+    <string name="title_activity_journalview">journalview</string>
+    <string name="update_button">Update</string>
 </resources>

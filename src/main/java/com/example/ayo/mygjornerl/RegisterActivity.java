@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,12 +19,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import static android.view.View.GONE;
+
 
 public class RegisterActivity extends AppCompatActivity {
     EditText username, password;
     Button login, registerUser;
 
     FirebaseAuth mAuth;
+    ProgressBar progressBarr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.emailLog);
         password = (EditText) findViewById(R.id.passLog2);
         mAuth = FirebaseAuth.getInstance();
+        progressBarr = (ProgressBar) findViewById(R.id.progressBar_reg);
         login = (Button) findViewById(R.id.login);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,17 +52,20 @@ public class RegisterActivity extends AppCompatActivity {
                 userEmail = username.getText().toString().trim();
                 userEpass = password.getText().toString().trim();
 
+
                 if (TextUtils.isEmpty(userEmail) & TextUtils.isEmpty(userEpass)) {
                     Toast.makeText(RegisterActivity.this, "email and password empty ", Toast.LENGTH_LONG);
                 }
+                progressBarr.setVisibility(View.VISIBLE);
                 mAuth.createUserWithEmailAndPassword(userEmail, userEpass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressBarr.setVisibility(View.GONE);
                         if (!task.isSuccessful()) {
                             Toast.makeText(RegisterActivity.this, "Account creation failed ", Toast.LENGTH_LONG);
 
                         } else {
-                            startActivity(new Intent(RegisterActivity.this, journalActivity.class));
+                            startActivity(new Intent(RegisterActivity.this, journalViewActivity.class));
                             finish();
                         }
                     }
